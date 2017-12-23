@@ -35,3 +35,41 @@ class Interpreter(NodeVisitor):
     def interpret(self):
         tree = self.parser.parse()
         return self.visit(tree)
+
+
+class PostfixNotation(NodeVisitor):
+    def __init__(self, parser):
+        self.parser = parser
+
+    def visit_BinOp(self, node):
+        left_val = self.visit(node.left)
+        right_val = self.visit(node.right)
+        return "{left} {right} {op}".format(left=left_val,
+                                            right=right_val,
+                                            op=node.op.value)
+
+    def visit_Num(self, node):
+        return node.value
+
+    def translate(self):
+        tree = self.parser.parse()
+        return self.visit(tree)
+
+
+class PrefixNotation(NodeVisitor):
+    def __init__(self, parser):
+        self.parser = parser
+
+    def visit_BinOp(self, node):
+        left_val = self.visit(node.left)
+        right_val = self.visit(node.right)
+        return "{op} {left} {right}".format(left=left_val,
+                                            right=right_val,
+                                            op=node.op.value)
+
+    def visit_Num(self, node):
+        return node.value
+
+    def translate(self):
+        tree = self.parser.parse()
+        return self.visit(tree)
