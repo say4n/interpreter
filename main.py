@@ -21,7 +21,6 @@ def main():
         result = interpreter.interpret()
         print(result)
 
-
         lexer = Lexer(text)
         parser = Parser(lexer)
         postfix = PostfixNotation(parser)
@@ -36,7 +35,6 @@ def main():
         
         result = prefix.translate()
         print("prefix: " + result)
-
 
 if __name__ == "__main__":
     main()

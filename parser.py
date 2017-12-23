@@ -22,11 +22,19 @@ class Parser:
             self._error()
 
     def factor(self):
-        """factor : INTEGER | LPAREN expr RPAREN
+        """(PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
         """
         token = self.current_token
         
-        if token.type == INTEGER:
+        if token.type == PLUS:
+            self.eat(PLUS)
+            return UnaryOp(token, self.factor())
+
+        elif token.type == MINUS:
+            self.eat(MINUS)
+            return UnaryOp(token, self.factor())
+
+        elif token.type == INTEGER:
             self.eat(INTEGER)
             return Num(token)
         
@@ -64,7 +72,7 @@ class Parser:
 
         expr   : term ((PLUS | MINUS) term)*
         term   : factor ((MUL | DIV | POW) factor)*
-        factor : INTEGER | LPAREN expr RPAREN
+        factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
         """
         node = self.term()
 

@@ -29,6 +29,12 @@ class Interpreter(NodeVisitor):
         elif node.op.type == POW:
             return self.visit(node.left) ** self.visit(node.right)
 
+    def visit_UnaryOp(self, node):
+        if node.op.type == PLUS:
+            return +self.visit(node.expr)
+        elif node.op.type == MINUS:
+            return -self.visit(node.expr)
+
     def visit_Num(self, node):
         return node.value
 
@@ -48,6 +54,12 @@ class PostfixNotation(NodeVisitor):
                                             right=right_val,
                                             op=node.op.value)
 
+    def visit_UnaryOp(self, node):
+        if node.op.type == PLUS:
+            return +self.visit(node.expr)
+        elif node.op.type == MINUS:
+            return -self.visit(node.expr)
+
     def visit_Num(self, node):
         return node.value
 
@@ -66,6 +78,12 @@ class PrefixNotation(NodeVisitor):
         return "{op} {left} {right}".format(left=left_val,
                                             right=right_val,
                                             op=node.op.value)
+
+    def visit_UnaryOp(self, node):
+        if node.op.type == PLUS:
+            return +self.visit(node.expr)
+        elif node.op.type == MINUS:
+            return -self.visit(node.expr)
 
     def visit_Num(self, node):
         return node.value
