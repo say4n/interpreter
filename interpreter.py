@@ -55,10 +55,12 @@ class PostfixNotation(NodeVisitor):
                                             op=node.op.value)
 
     def visit_UnaryOp(self, node):
+        val = self.visit(node.expr)
+
         if node.op.type == PLUS:
-            return +self.visit(node.expr)
+            return "+{val}".format(val=val)
         elif node.op.type == MINUS:
-            return -self.visit(node.expr)
+            return "-{val}".format(val=val)
 
     def visit_Num(self, node):
         return node.value
@@ -80,11 +82,13 @@ class PrefixNotation(NodeVisitor):
                                             op=node.op.value)
 
     def visit_UnaryOp(self, node):
-        if node.op.type == PLUS:
-            return +self.visit(node.expr)
-        elif node.op.type == MINUS:
-            return -self.visit(node.expr)
+        val = self.visit(node.expr)
 
+        if node.op.type == PLUS:
+            return "+{val}".format(val=val)
+        elif node.op.type == MINUS:
+            return "-{val}".format(val=val)
+    
     def visit_Num(self, node):
         return node.value
 

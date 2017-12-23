@@ -21,20 +21,20 @@ def main():
         result = interpreter.interpret()
         print(result)
 
-        lexer = Lexer(text)
-        parser = Parser(lexer)
-        postfix = PostfixNotation(parser)
+        # lexer = Lexer(text)
+        # parser = Parser(lexer)
+        # postfix = PostfixNotation(parser)
         
-        result = postfix.translate()
-        print("postfix: " + result)
+        # result = postfix.translate()
+        # print("postfix: " + str(result))
 
 
-        lexer = Lexer(text)
-        parser = Parser(lexer)
-        prefix = PrefixNotation(parser)
+        # lexer = Lexer(text)
+        # parser = Parser(lexer)
+        # prefix = PrefixNotation(parser)
         
-        result = prefix.translate()
-        print("prefix: " + result)
+        # result = prefix.translate()
+        # print("prefix: " + str(result))
 
 if __name__ == "__main__":
     main()
