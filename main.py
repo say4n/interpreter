@@ -3,6 +3,7 @@
 
 from parser import Parser
 from lexer import Lexer
+from interpreter import Interpreter
 
 def main():
     while True:
@@ -12,9 +13,13 @@ def main():
             break
         if not text:
             break
+        
         lexer = Lexer(text)
-        interpreter = Parser(lexer)
-        result = interpreter.expr()
+        parser = Parser(lexer)
+        interpreter = Interpreter(parser)
+        
+        result = interpreter.interpret()
+        
         print(result)
 
 

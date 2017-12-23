@@ -2,6 +2,7 @@
 """
 
 from token_types import *
+from ast import *
 
 class Parser:
     def __init__(self, lexer):
@@ -27,36 +28,35 @@ class Parser:
         
         if token.type == INTEGER:
             self.eat(INTEGER)
-            return token.value
+            return Num(token)
         
         elif token.type == LPAREN:
             self.eat(LPAREN)
-            result = self.expr()
+            node = self.expr()
             self.eat(RPAREN)
 
-            return result
+            return node
 
     def term(self):
         """term   : factor ((MUL | DIV | POW) factor)*
         """
-        result = self.factor()
+        node = self.factor()
 
         while self.current_token.type in (MUL, DIV, POW):
             token = self.current_token
 
             if token.type == MUL:
                 self.eat(MUL)
-                result = result * self.factor()
             
             elif token.type == DIV:
                 self.eat(DIV)
-                result = result // self.factor()
             
             elif token.type == POW:
                 self.eat(POW)
-                result = result ** self.factor()
 
-        return result
+            node = BinOp(left=node, op=token, right=self.factor())
+
+        return node
 
 
     def expr(self):
@@ -66,20 +66,20 @@ class Parser:
         term   : factor ((MUL | DIV | POW) factor)*
         factor : INTEGER | LPAREN expr RPAREN
         """
-        result = self.term()
+        node = self.term()
 
         while self.current_token.type in (PLUS, MINUS):
             token = self.current_token
 
             if token.type == PLUS:
                 self.eat(PLUS)
-                result = result + self.term()
             
             elif token.type == MINUS:
                 self.eat(MINUS)
-                result = result - self.term()
+
+            node = BinOp(left=node, op=token, right=self.term())
         
-        return result
+        return node
 
     def parse(self):
         return self.expr()
